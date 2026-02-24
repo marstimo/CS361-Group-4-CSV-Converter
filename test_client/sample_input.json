@@ -1,0 +1,15 @@
+[
+  {
+    "date": "2026-02-20",
+    "category": "Food",
+    "price": 12.50,
+    "note": "pizza",
+    "meta": { "store": "Target", "tags": ["hot","quick"] }
+  },
+  {
+    "date": "2026-02-21",
+    "category": "Games",
+    "price": 59.99,
+    "meta": { "store": "Steam" }
+  }
+]
