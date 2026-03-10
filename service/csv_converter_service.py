@@ -51,7 +51,7 @@ def is_list(x: Any) -> bool:
     return isinstance(x, list)
 
 
-def flatten_json(obj: Any, prefix: str = "", out: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def flatten_json(json_data: Any, prefix: str = "", out: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
     Flattens nested dictionaries.
     - Nested dict keys become parent.child
@@ -61,15 +61,15 @@ def flatten_json(obj: Any, prefix: str = "", out: Optional[Dict[str, Any]] = Non
     if out is None:
         out = {}
 
-    if is_dict(obj):
-        for k, v in obj.items():
+    if is_dict(json_data):
+        for k, v in json_data.items():
             new_key = f"{prefix}.{k}" if prefix else str(k)
             flatten_json(v, new_key, out)
-    elif is_list(obj):
+    elif is_list(json_data):
         # Arrays become a JSON string
-        out[prefix] = json.dumps(obj, ensure_ascii=False)
+        out[prefix] = json.dumps(json_data, ensure_ascii=False)
     else:
-        out[prefix] = obj
+        out[prefix] = json_data
 
     return out
 
