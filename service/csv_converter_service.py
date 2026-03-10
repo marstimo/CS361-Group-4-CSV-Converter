@@ -153,6 +153,16 @@ def validate_request(req: dict) -> None:
 # ---------------------------
 # Main microservice loop
 # ---------------------------
+def convert_json_to_csv(input_path: str, output_path: str, columns: List[str], flatten: bool) -> int:
+    if not os.path.exists(input_path):
+        raise FileNotFoundError(f"Input JSON file not found: {input_path}")
+    raw_json = read_json(input_path)
+    normalized_rows = normalize_rows(raw_json, flatten=flatten)
+    csv_rows = build_csv(normalized_rows, columns)
+    write_csv(output_path, csv_rows)
+    return max(0, len(csv_rows) - 1)
+
+
 def process_one_request() -> None:
     """
     Reads REQUEST_FILE, performs conversion, writes DONE_FILE or ERROR_FILE,
@@ -164,20 +174,10 @@ def process_one_request() -> None:
     req = read_json(REQUEST_FILE)
     validate_request(req)
 
-    input_path = req["inputJsonPath"]
     output_path = req["outputCsvPath"]
-    columns = req["columns"]
-    flatten = req["flatten"]
+    rows_written = convert_json_to_csv(req["inputJsonPath"], output_path, req["columns"], req["flatten"])
 
-    if not os.path.exists(input_path):
-        raise FileNotFoundError(f"Input JSON file not found: {input_path}")
-
-    raw_json = read_json(input_path)
-    normalized_rows = normalize_rows(raw_json, flatten=flatten)
-    csv_rows = build_csv(normalized_rows, columns)
-    write_csv(output_path, csv_rows)
-
-    write_json(DONE_FILE, {"status": "ok", "outputCsvPath": output_path, "rowsWritten": max(0, len(csv_rows) - 1)})
+    write_json(DONE_FILE, {"status": "ok", "outputCsvPath": output_path, "rowsWritten": rows_written})
 
 
 def run_service() -> None:
