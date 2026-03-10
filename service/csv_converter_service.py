@@ -5,7 +5,7 @@ import csv
 from typing import Any, Dict, List, Optional
 
 # ---------------------------
-# Config (matches your plan)
+# Config
 # ---------------------------
 REQUEST_FILE = "csv_request.json"
 DONE_FILE = "csv_done.json"
