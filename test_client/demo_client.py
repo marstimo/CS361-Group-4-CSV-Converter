@@ -31,8 +31,8 @@ while not (os.path.exists(DONE_FILE) or os.path.exists(ERROR_FILE)):
     time.sleep(0.1)
 
 if os.path.exists(DONE_FILE):
-    done = json.load(open(DONE_FILE, "r", encoding="utf-8"))
-    print("DONE:", done)
+    done_response = json.load(open(DONE_FILE, "r", encoding="utf-8"))
+    print("DONE:", done_response)
 else:
-    err = json.load(open(ERROR_FILE, "r", encoding="utf-8"))
-    print("ERROR:", err)
+    error_response = json.load(open(ERROR_FILE, "r", encoding="utf-8"))
+    print("ERROR:", error_response)
